@@ -1,0 +1,65 @@
+# Dependencies & build output — never scan automatically
+vendor/
+node_modules/
+public/build/
+public/hot/
+public/storage/
+storage/
+bootstrap/cache/
+build/
+dist/
+coverage/
+logs/
+tmp/
+cache/
+
+# Tooling / editor
+.git/
+.github/
+.idea/
+.vscode/
+.fleet/
+.nova/
+.zed/
+.impeccable/
+
+# Lockfiles & tool caches
+composer.lock
+package-lock.json
+*.lock
+.phpunit.result.cache
+.phpunit.cache/
+
+# Logs
+*.log
+
+# Generated / minified assets
+*.map
+*.min.js
+*.min.css
+
+# Archives
+*.zip
+*.tar
+*.gz
+
+# Binary / media assets
+*.png
+*.jpg
+*.jpeg
+*.gif
+*.webp
+*.svg
+*.ico
+*.woff
+*.woff2
+*.mp4
+
+# Secrets & local DB (never read unless explicitly asked)
+.env
+.env.*
+!.env.example
+auth.json
+database/*.sqlite
+database/*.sqlite-journal
+storage/*.key
