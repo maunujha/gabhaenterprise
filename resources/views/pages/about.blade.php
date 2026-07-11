@@ -55,7 +55,7 @@
     <section class="bg-surface border-b border-line" data-reveal>
         <div class="container-x py-20 lg:py-24">
             <blockquote class="mx-auto max-w-4xl text-center">
-                <p class="font-display italic text-[clamp(1.6rem,3.4vw,2.6rem)] leading-snug text-ink">
+                <p class="font-display text-[clamp(1.6rem,3.4vw,2.6rem)] leading-snug text-ink">
                     “We do not ship a garment we would not be proud to sell ourselves.”
                 </p>
                 <footer class="mt-6 text-[0.9rem] uppercase tracking-[0.18em] text-muted">

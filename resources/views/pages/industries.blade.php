@@ -4,7 +4,7 @@
     // What we specifically offer each buyer type.
     $offers = [
         'Clothing Brands' => ['Consistent quality that protects your reputation', 'Capacity to scale without changing partner', 'Private-label finishing, your labels throughout'],
-        'Startups' => ['Low first-run minimums from 300 pieces', 'Tech-pack and development guidance', 'A route from idea to your first sellable drop'],
+        'Startups' => ['Low first-run minimums from 30 pieces', 'Tech-pack and development guidance', 'A route from idea to your first sellable drop'],
         'Wholesalers' => ['Dependable, repeatable lead times', 'Consistent sizing across large runs', 'Pricing that works at volume'],
         'Retailers' => ['Private-label ranges for your shelves', 'Quality that holds up against name brands', 'Retail-ready folding, tagging and packaging'],
         'Exporters' => ['Export-grade finishing and documentation', 'Repeatable quality to an agreed AQL', 'Packaging and labelling for overseas markets'],
@@ -52,5 +52,5 @@
     <x-ui.cta-band
         title="Whichever of these you are, the first step is the same."
         text="Tell us what you sell and what you want to make. We’ll show you how we’d manufacture it — and what it costs."
-        label="Start a project" />
+        label="Contact us" />
 </x-layouts.app>

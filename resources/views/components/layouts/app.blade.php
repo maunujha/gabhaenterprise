@@ -59,7 +59,7 @@
 
     {{-- Preload critical self-hosted fonts (no external requests) --}}
     <link rel="preload" href="/fonts/hanken-grotesk-var.woff2" as="font" type="font/woff2" crossorigin>
-    <link rel="preload" href="/fonts/newsreader-600.woff2" as="font" type="font/woff2" crossorigin>
+    <link rel="preload" href="/fonts/poppins-600.woff2" as="font" type="font/woff2" crossorigin>
 
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 
@@ -76,5 +76,7 @@
     </main>
 
     <x-site.footer />
+
+    <x-site.whatsapp-fab />
 </body>
 </html>

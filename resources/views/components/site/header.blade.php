@@ -30,7 +30,7 @@
         </nav>
 
         <div class="hidden lg:block">
-            <x-ui.button :href="route('contact')" variant="ink" icon="arrow-right">Start a project</x-ui.button>
+            <x-ui.button :href="route('contact')" variant="ink" icon="arrow-right">Contact us</x-ui.button>
         </div>
 
         {{-- Mobile toggle --}}
@@ -58,7 +58,7 @@
         </nav>
 
         <div class="mt-auto pt-8 border-t border-line space-y-4">
-            <x-ui.button :href="route('contact')" variant="primary" icon="arrow-right" class="w-full">Start a project</x-ui.button>
+            <x-ui.button :href="route('contact')" variant="primary" icon="arrow-right" class="w-full">Contact us</x-ui.button>
             <div class="flex flex-col gap-2 text-sm text-muted">
                 <a href="tel:{{ config('company.phone_e164') }}" class="inline-flex items-center gap-2">
                     <x-ui.icon name="phone" :size="16" /> {{ config('company.phone') }}

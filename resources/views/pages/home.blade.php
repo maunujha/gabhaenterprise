@@ -1,11 +1,12 @@
 @php
     $company = config('company');
     $services = $company['services'];
-    $stats = $company['stats'];
+
+    $wa = 'https://wa.me/'.$company['whatsapp'].'?text='.rawurlencode($company['whatsapp_message']);
 
     $process = [
-        ['title' => 'Sample', 'text' => 'You send a tech pack, a reference garment, or a sketch. We develop the pattern, source the fabric, and stitch a sample for your approval.'],
-        ['title' => 'Approve', 'text' => 'We refine fit, fabric, print, and trims until the sample is exactly right — and lock a costing and timeline before a single bulk unit is cut.'],
+        ['title' => 'Sample', 'text' => 'Send a tech pack, a reference garment, or a sketch. We develop the pattern, source the fabric, and stitch a sample for your approval.'],
+        ['title' => 'Approve', 'text' => 'We refine fit, fabric, print, and trims until it is exactly right — and lock a costing and timeline before a single bulk unit is cut.'],
         ['title' => 'Produce', 'text' => 'Bulk cutting, stitching, printing, and embroidery run on managed lines with in-line checks that hold the approved standard at scale.'],
         ['title' => 'Deliver', 'text' => 'Every piece is finished, quality-checked, folded, tagged, and packed to your spec — ready for retail or to ship.'],
     ];
@@ -13,99 +14,108 @@
 
 <x-layouts.app
     title="Private Label & OEM Apparel Manufacturer"
-    description="Gabha Enterprise is a private-label and OEM apparel manufacturer in Dholpur, India — premium heavyweight cotton clothing for brands, retailers and exporters. From fabric sourcing to finished, packed garments.">
+    description="Gabha Enterprise is a private-label and OEM apparel manufacturer in Dholpur, India — premium heavyweight cotton clothing for brands, retailers and exporters, from just 30 pieces per style. Chat on WhatsApp for a quote.">
 
-    {{-- ===================== Hero ===================== --}}
+    {{-- ============================ Hero ============================ --}}
     <section class="relative overflow-hidden">
-        {{-- faint weave motif --}}
-        <div aria-hidden="true" class="pointer-events-none absolute -right-24 -top-24 h-[34rem] w-[34rem] opacity-[0.05]">
-            <svg viewBox="0 0 200 200" fill="none" stroke="currentColor" stroke-width="0.6" class="text-ink h-full w-full">
-                @for ($i = 0; $i <= 200; $i += 12.5)
-                    <line x1="{{ $i }}" y1="0" x2="{{ $i }}" y2="200" />
-                    <line x1="0" y1="{{ $i }}" x2="200" y2="{{ $i }}" />
-                @endfor
-            </svg>
-        </div>
-
-        <div class="container-x pt-28 pb-16 lg:pt-36 lg:pb-24">
-            <p class="text-[0.82rem] font-medium uppercase tracking-[0.22em] text-muted">
-                Gabha Enterprise · Apparel Manufacturing
-            </p>
-
-            <h1 class="mt-6 font-display text-[clamp(2.6rem,6.2vw,5rem)] text-ink max-w-[16ch]">
-                We make the apparel brands put <span class="italic">their name</span> on.
-            </h1>
-
-            <div class="mt-10 grid gap-12 lg:grid-cols-12 lg:items-end">
+        <div class="container-x pt-24 pb-14 lg:pt-32 lg:pb-24">
+            <div class="grid items-center gap-12 lg:grid-cols-12 lg:gap-10">
+                {{-- Copy + CTAs --}}
                 <div class="lg:col-span-7">
-                    <p class="text-[1.2rem] leading-relaxed text-ink-soft measure">
-                        A private-label and OEM garment manufacturer in Dholpur, India —
-                        producing premium heavyweight cotton apparel for clothing brands,
-                        retailers, and exporters. You design the label; we engineer the garment,
-                        from fabric to finished and packed.
+                    <p class="inline-flex items-center gap-2 rounded-full border border-line bg-surface px-3.5 py-1.5 text-[0.8rem] font-medium text-ink-soft">
+                        <span class="inline-block h-1.5 w-1.5 rounded-full bg-brand"></span>
+                        Manufacturing for 50+ apparel brands
                     </p>
 
-                    <div class="mt-9 flex flex-wrap gap-3">
-                        <x-ui.button :href="route('contact')" variant="primary" icon="arrow-right">Start a project</x-ui.button>
-                        <x-ui.button :href="route('services')" variant="ghost">Explore our services</x-ui.button>
+                    <h1 class="mt-6 font-display text-[clamp(2.4rem,5.6vw,4.25rem)] text-ink max-w-[15ch]">
+                        We make premium apparel for your brand.
+                    </h1>
+
+                    <p class="mt-6 text-[1.15rem] leading-relaxed text-ink-soft max-w-xl">
+                        Private-label &amp; OEM clothing manufacturing in Dholpur, India — heavyweight
+                        cotton tees, hoodies, polos and more. You design the label; we make it, finish
+                        it, and pack it. <span class="text-ink font-medium">From just 30 pieces per style.</span>
+                    </p>
+
+                    {{-- Primary CTAs — WhatsApp + Call first (fastest lead paths) --}}
+                    <div class="mt-9 flex flex-col sm:flex-row flex-wrap gap-3">
+                        <x-ui.button href="{{ $wa }}" variant="whatsapp" icon="whatsapp" rel="noopener" target="_blank">
+                            Get a quote on WhatsApp
+                        </x-ui.button>
+                        <x-ui.button href="tel:{{ $company['phone_e164'] }}" variant="ink" icon="phone">
+                            Call {{ $company['phone'] }}
+                        </x-ui.button>
+                    </div>
+                    <p class="mt-4 text-[0.92rem] text-muted">
+                        Prefer to write? <a href="{{ route('contact') }}" class="link-underline text-ink">Send an inquiry</a> — we reply within one business day.
+                    </p>
+                </div>
+
+                {{-- Hero image --}}
+                <div class="lg:col-span-5">
+                    <div class="relative mx-auto max-w-sm lg:max-w-none">
+                        <div aria-hidden="true" class="absolute -right-3 -top-3 h-24 w-24 rounded-2xl bg-brand/10 lg:h-32 lg:w-32"></div>
+                        <div class="relative overflow-hidden rounded-2xl bg-surface ring-1 ring-line">
+                            <img
+                                src="/images/garment-tee-800.webp"
+                                srcset="/images/garment-tee-500.webp 500w, /images/garment-tee-800.webp 800w, /images/garment-tee-1200.webp 1200w"
+                                sizes="(min-width: 1024px) 40vw, 90vw"
+                                width="1000" height="1200" fetchpriority="high" decoding="async"
+                                alt="Model wearing a Gabha Enterprise black heavyweight cotton t-shirt with dark denim"
+                                class="w-full h-auto object-cover">
+                        </div>
+                        {{-- Floating trust badge --}}
+                        <div class="absolute -bottom-4 -left-3 sm:-left-5 flex items-center gap-2.5 rounded-xl border border-line bg-bg px-4 py-3 shadow-[0_18px_40px_-20px_oklch(0.2_0.03_265/0.5)]">
+                            <span class="flex h-8 w-8 items-center justify-center rounded-lg bg-brand-tint text-brand"><x-ui.icon name="check" :size="18" /></span>
+                            <span class="leading-tight">
+                                <span class="block text-[0.95rem] font-semibold text-ink">From 30 pieces</span>
+                                <span class="block text-[0.78rem] text-muted">low minimum / style</span>
+                            </span>
+                        </div>
                     </div>
                 </div>
-
-                {{-- Editorial spec list (real facts, not a metric template) --}}
-                <div class="lg:col-span-5">
-                    <dl class="divide-y divide-line border-y border-line">
-                        <div class="flex items-baseline justify-between gap-6 py-3.5">
-                            <dt class="text-muted text-[0.95rem]">Fabric</dt>
-                            <dd class="text-ink font-medium text-right">Heavyweight cotton, 180–240 GSM</dd>
-                        </div>
-                        <div class="flex items-baseline justify-between gap-6 py-3.5">
-                            <dt class="text-muted text-[0.95rem]">Minimum order</dt>
-                            <dd class="text-ink font-medium text-right">From 300 pieces / style</dd>
-                        </div>
-                        <div class="flex items-baseline justify-between gap-6 py-3.5">
-                            <dt class="text-muted text-[0.95rem]">Sampling</dt>
-                            <dd class="text-ink font-medium text-right">~15 days to first sample</dd>
-                        </div>
-                        <div class="flex items-baseline justify-between gap-6 py-3.5">
-                            <dt class="text-muted text-[0.95rem]">Based in</dt>
-                            <dd class="text-ink font-medium text-right">Dholpur, Rajasthan, India</dd>
-                        </div>
-                    </dl>
-                </div>
             </div>
         </div>
     </section>
 
-    {{-- ===================== Positioning + proof ===================== --}}
-    <section class="border-t border-line bg-surface" data-reveal>
+    {{-- ==================== Trust / proof strip ==================== --}}
+    <section class="border-y border-line bg-surface">
+        <div class="container-x py-8">
+            <dl class="grid grid-cols-2 gap-6 md:grid-cols-4">
+                @foreach ([
+                    ['v' => '30', 'l' => 'Piece minimum / style'],
+                    ['v' => '180–240', 'l' => 'GSM heavyweight cotton'],
+                    ['v' => '~15 days', 'l' => 'To your first sample'],
+                    ['v' => '50+', 'l' => 'Brands manufactured for'],
+                ] as $stat)
+                    <div class="text-center md:text-left">
+                        <dt class="font-display text-[clamp(1.5rem,2.4vw,2rem)] text-ink leading-none">{{ $stat['v'] }}</dt>
+                        <dd class="mt-1.5 text-[0.85rem] text-muted leading-snug">{{ $stat['l'] }}</dd>
+                    </div>
+                @endforeach
+            </dl>
+        </div>
+    </section>
+
+    {{-- ==================== Positioning ==================== --}}
+    <section class="border-b border-line" data-reveal>
         <div class="container-x py-16 lg:py-20">
-            <div class="grid gap-10 lg:grid-cols-12 lg:items-center">
-                <div class="lg:col-span-7">
-                    <p class="font-display text-[clamp(1.5rem,2.6vw,2.1rem)] leading-snug text-ink max-w-2xl">
-                        We are the factory floor behind labels you already know —
-                        including our own brand, <span class="italic">Urbanflaky</span>. We build the
-                        garment to the same standard, whether the name on it is ours or yours.
-                    </p>
-                </div>
-                <div class="lg:col-span-5">
-                    <dl class="grid grid-cols-2 gap-x-8 gap-y-8">
-                        @foreach ($stats as $stat)
-                            <div>
-                                <dt class="font-display text-[clamp(1.9rem,3vw,2.5rem)] text-ink leading-none">{{ $stat['value'] }}</dt>
-                                <dd class="mt-2 text-[0.9rem] text-muted leading-snug">{{ $stat['label'] }}</dd>
-                            </div>
-                        @endforeach
-                    </dl>
-                </div>
-            </div>
+            <p class="font-display text-[clamp(1.5rem,2.8vw,2.2rem)] leading-snug text-ink max-w-4xl">
+                We are the factory floor behind labels you already know — including our own brand,
+                Urbanflaky. We build your garments to the same standard, whether the name on the neck
+                label is ours or yours.
+            </p>
+            <a href="{{ route('about') }}" class="mt-6 link-underline inline-flex items-center gap-2 text-ink">
+                Our story <x-ui.icon name="arrow-right" :size="18" />
+            </a>
         </div>
     </section>
 
-    {{-- ===================== Services index ===================== --}}
-    <section class="border-t border-line" data-reveal>
+    {{-- ==================== Services ==================== --}}
+    <section class="border-b border-line" data-reveal>
         <div class="container-x py-20 lg:py-28">
             <div class="flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
-                <x-ui.section-title lead="Nine capabilities, one accountable manufacturer — so your product never passes through a chain of middlemen.">
+                <x-ui.section-title lead="Nine capabilities under one roof — so your product never passes through a chain of middlemen.">
                     From fabric to finished garment.
                 </x-ui.section-title>
                 <a href="{{ route('services') }}" class="link-underline inline-flex items-center gap-2 text-ink shrink-0">
@@ -133,8 +143,55 @@
         </div>
     </section>
 
-    {{-- ===================== Process (genuine sequence) ===================== --}}
-    <section class="border-t border-line bg-surface" data-reveal>
+    {{-- ==================== Standards (dark band + image) ==================== --}}
+    <section class="bg-ink-band text-on-ink" data-reveal>
+        <div class="container-x py-20 lg:py-28">
+            <div class="grid gap-12 lg:grid-cols-12 lg:items-center">
+                <div class="lg:col-span-7 order-2 lg:order-1">
+                    <h2 class="font-display text-[clamp(2rem,4vw,3rem)] text-on-ink max-w-xl">
+                        Built to a standard, not to a price.
+                    </h2>
+                    <p class="mt-6 text-on-ink-muted leading-relaxed max-w-xl">
+                        Cheap manufacturing shows — a collar that curls after one wash, a print that
+                        cracks, a size that drifts across a run. We build the opposite: garments
+                        engineered to survive the wash test, the wear test, and your customer’s
+                        expectations. That is what keeps brands re-ordering.
+                    </p>
+                    <ul class="mt-8 grid gap-4 sm:grid-cols-2 max-w-xl">
+                        @foreach ([
+                            ['icon' => 'shield', 'title' => 'Wash-tested durability'],
+                            ['icon' => 'ruler', 'title' => 'Consistent sizing at scale'],
+                            ['icon' => 'handshake', 'title' => 'One accountable contact'],
+                            ['icon' => 'sparkle', 'title' => 'We run our own brand'],
+                        ] as $item)
+                            <li class="flex items-center gap-3">
+                                <span class="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-white/10"><x-ui.icon :name="$item['icon']" :size="18" class="text-on-ink" /></span>
+                                <span class="text-[0.98rem] text-on-ink">{{ $item['title'] }}</span>
+                            </li>
+                        @endforeach
+                    </ul>
+                    <div class="mt-9 flex flex-wrap gap-3">
+                        <x-ui.button href="{{ $wa }}" variant="whatsapp" icon="whatsapp" rel="noopener" target="_blank">Chat on WhatsApp</x-ui.button>
+                        <x-ui.button :href="route('why')" variant="on-ink" icon="arrow-right">Why brands choose us</x-ui.button>
+                    </div>
+                </div>
+                <div class="lg:col-span-5 order-1 lg:order-2">
+                    <div class="overflow-hidden rounded-2xl">
+                        <img
+                            src="/images/garment-polo-560.webp"
+                            srcset="/images/garment-polo-560.webp 560w, /images/garment-polo-900.webp 900w"
+                            sizes="(min-width: 1024px) 38vw, 90vw"
+                            width="900" height="1080" loading="lazy" decoding="async"
+                            alt="Model wearing a Gabha Enterprise teal pique cotton polo shirt"
+                            class="w-full h-auto object-cover">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    {{-- ==================== Process ==================== --}}
+    <section class="border-b border-line" data-reveal>
         <div class="container-x py-20 lg:py-28">
             <x-ui.section-title lead="A clear, sample-first process. Nothing goes to bulk until you have approved exactly what you are paying for.">
                 How a project runs.
@@ -152,57 +209,16 @@
         </div>
     </section>
 
-    {{-- ===================== Standards (dark band) ===================== --}}
-    <section class="bg-ink-band text-on-ink" data-reveal>
-        <div class="container-x py-20 lg:py-28">
-            <div class="grid gap-12 lg:grid-cols-12 lg:items-center">
-                <div class="lg:col-span-6">
-                    <h2 class="font-display text-[clamp(2rem,4vw,3rem)] text-on-ink max-w-xl">
-                        Built to a standard, not to a price.
-                    </h2>
-                    <p class="mt-6 text-on-ink-muted leading-relaxed max-w-xl">
-                        Cheap manufacturing shows — in a collar that curls after one wash, a print
-                        that cracks, a size that drifts across a run. We build the opposite:
-                        garments engineered to survive the wash test, the wear test, and your
-                        customer’s expectations. That is what keeps brands re-ordering.
-                    </p>
-                    <div class="mt-9">
-                        <x-ui.button :href="route('why')" variant="on-ink" icon="arrow-right">Why brands choose us</x-ui.button>
-                    </div>
-                </div>
-                <div class="lg:col-span-6">
-                    <ul class="grid gap-4 sm:grid-cols-2">
-                        @foreach ([
-                            ['icon' => 'shield', 'title' => 'Wash-tested durability', 'text' => 'Fabric checked for GSM, shrinkage, and colourfastness before it becomes a garment.'],
-                            ['icon' => 'ruler', 'title' => 'Consistent sizing', 'text' => 'Graded patterns and in-line measurement so unit 30,000 fits like the sample.'],
-                            ['icon' => 'handshake', 'title' => 'One point of contact', 'text' => 'No middlemen — you speak to the people who actually make your garment.'],
-                            ['icon' => 'leaf', 'title' => 'Responsible making', 'text' => 'Efficient cutting, considered sourcing, and less waste on every run.'],
-                        ] as $item)
-                            <li class="rounded-xl border border-white/10 p-6">
-                                <x-ui.icon :name="$item['icon']" :size="24" class="text-on-ink" />
-                                <h3 class="mt-4 font-medium text-on-ink">{{ $item['title'] }}</h3>
-                                <p class="mt-1.5 text-[0.9rem] leading-relaxed text-on-ink-muted">{{ $item['text'] }}</p>
-                            </li>
-                        @endforeach
-                    </ul>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    {{-- ===================== Industries preview ===================== --}}
-    <section class="border-t border-line" data-reveal>
-        <div class="container-x py-20 lg:py-28">
-            <div class="flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
-                <x-ui.section-title lead="If you sell apparel, we can make it. We manufacture for six kinds of buyer — each with different priorities, all needing the same thing: garments that hold up.">
-                    Who we manufacture for.
-                </x-ui.section-title>
+    {{-- ==================== Industries ==================== --}}
+    <section class="border-b border-line" data-reveal>
+        <div class="container-x py-16 lg:py-20">
+            <div class="flex flex-col gap-6 md:flex-row md:items-center md:justify-between">
+                <h2 class="font-display text-[clamp(1.5rem,2.6vw,2rem)] text-ink">Who we manufacture for.</h2>
                 <a href="{{ route('industries') }}" class="link-underline inline-flex items-center gap-2 text-ink shrink-0">
                     Industries we serve <x-ui.icon name="arrow-right" :size="18" />
                 </a>
             </div>
-
-            <ul class="mt-12 flex flex-wrap gap-3">
+            <ul class="mt-8 flex flex-wrap gap-3">
                 @foreach ($company['industries'] as $industry)
                     <li class="inline-flex items-center gap-2.5 rounded-full border border-line px-5 py-2.5 text-[0.95rem] text-ink">
                         <x-ui.icon :name="$industry['icon']" :size="18" class="text-brand" />

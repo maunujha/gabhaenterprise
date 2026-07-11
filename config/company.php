@@ -22,9 +22,10 @@ return [
 
     // Contact ------------------------------------------------------------
     'email'         => 'support@urbanflaky.in',
-    'phone'         => '+91 95296 96971',
-    'phone_e164'    => '+919529696971',
-    'whatsapp'      => '919529696971',
+    'phone'         => '+91 73572 91841',
+    'phone_e164'    => '+917357291841',
+    'whatsapp'      => '917357291841',
+    'whatsapp_message' => 'Hi Gabha Enterprise, I would like to discuss manufacturing apparel for my brand.',
 
     // Where inquiry notifications are delivered. Same-domain internal
     // delivery on Hostinger, so it is not affected by external filtering.
@@ -56,7 +57,7 @@ return [
     // Headline capability figures (kept factual + conservative) ----------
     'stats' => [
         ['value' => '50+',   'label' => 'Brands manufactured for'],
-        ['value' => '300',   'label' => 'Piece minimum per style'],
+        ['value' => '30',    'label' => 'Piece minimum per style'],
         ['value' => '180 GSM+', 'label' => 'Heavyweight cotton standard'],
         ['value' => '15 days', 'label' => 'Typical sampling turnaround'],
     ],
@@ -65,7 +66,7 @@ return [
     'services' => [
         ['slug' => 'private-label', 'icon' => 'tag',       'title' => 'Private Label Manufacturing', 'summary' => 'Your brand, our factory floor. We produce finished garments under your label, ready to sell — you own the design, we own the making.'],
         ['slug' => 'oem',           'icon' => 'layers',    'title' => 'OEM Clothing Manufacturing',  'summary' => 'Build to your specification. Send a tech pack and we engineer the garment — construction, grading, and tolerances to spec.'],
-        ['slug' => 'bulk',          'icon' => 'boxes',     'title' => 'Bulk Apparel Production',      'summary' => 'Consistent quality at volume. Scaled cutting, stitching, and finishing lines that hold the same standard from unit 300 to unit 30,000.'],
+        ['slug' => 'bulk',          'icon' => 'boxes',     'title' => 'Bulk Apparel Production',      'summary' => 'Consistent quality at volume. Scaled cutting, stitching, and finishing lines that hold the same standard from unit 30 to unit 30,000.'],
         ['slug' => 'custom',        'icon' => 'scissors',  'title' => 'Custom Garment Manufacturing','summary' => 'From a sketch or a reference sample. We develop patterns, source trims, and build a garment that did not exist before.'],
         ['slug' => 'fabric',        'icon' => 'spool',     'title' => 'Fabric Sourcing',             'summary' => 'Heavyweight cotton, loopknit, fleece, and blends — sourced, tested for GSM and shrinkage, and matched to your price point.'],
         ['slug' => 'printing',      'icon' => 'printer',   'title' => 'Printing',                    'summary' => 'Screen, DTG, and puff printing with wash-tested durability. Colour matched to your reference, checked panel by panel.'],

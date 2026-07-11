@@ -3,7 +3,7 @@
         ['icon' => 'sparkle', 'title' => 'We run our own brand', 'text' => 'Through Urbanflaky we sell to demanding customers every day. We manufacture your garments to the exact standard we hold our own to — because we know what a returning customer costs to earn.'],
         ['icon' => 'handshake', 'title' => 'Direct manufacturer, no middlemen', 'text' => 'You are talking to the factory, not a trading agent marking up someone else’s work. That means honest costs, faster answers, and no telephone game with your quality.'],
         ['icon' => 'shield', 'title' => 'Quality control at every stage', 'text' => 'Fabric testing, a sealed pre-production sample, in-line checks, and a final inspection. Problems are caught on our floor, not by your customers.'],
-        ['icon' => 'rocket', 'title' => 'Low minimums, room to grow', 'text' => 'Start at 300 pieces per style and scale to tens of thousands with the same partner — no need to switch factories the moment you succeed.'],
+        ['icon' => 'rocket', 'title' => 'Low minimums, room to grow', 'text' => 'Start at 30 pieces per style and scale to tens of thousands with the same partner — no need to switch factories the moment you succeed.'],
         ['icon' => 'layers', 'title' => 'Full-service, under one roof', 'text' => 'Fabric, cutting, stitching, printing, embroidery, finishing, and packing in one place. One team owns the whole garment, so nothing falls through the gaps between vendors.'],
         ['icon' => 'clock', 'title' => 'Honest timelines and pricing', 'text' => 'We quote what things actually cost and take, then meet it. No surprise charges, no quietly slipping deadlines.'],
     ];
@@ -11,7 +11,7 @@
     $comparison = [
         ['point' => 'Who you talk to', 'broker' => 'A sales agent', 'us' => 'The people who make your garment'],
         ['point' => 'Quality accountability', 'broker' => 'Passed between vendors', 'us' => 'One team, start to finish'],
-        ['point' => 'Minimum order', 'broker' => 'Often high', 'us' => 'From 300 pieces per style'],
+        ['point' => 'Minimum order', 'broker' => 'Often high', 'us' => 'From 30 pieces per style'],
         ['point' => 'Pricing', 'broker' => 'Marked up, opaque', 'us' => 'Direct and itemised'],
         ['point' => 'Scaling up', 'broker' => 'Switch suppliers', 'us' => 'Same partner, more capacity'],
     ];

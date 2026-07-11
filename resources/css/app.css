@@ -12,7 +12,7 @@
 
 @theme {
     --font-sans: 'Hanken Grotesk', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
-    --font-serif: 'Newsreader', ui-serif, Georgia, 'Times New Roman', serif;
+    --font-heading: 'Poppins', 'Hanken Grotesk', ui-sans-serif, system-ui, sans-serif;
 
     /* Surfaces */
     --color-bg: oklch(1 0 0);
@@ -33,6 +33,10 @@
     --color-brand-strong: oklch(0.38 0.13 264);
     --color-brand-tint: oklch(0.955 0.028 264);
 
+    /* WhatsApp — recognisable green, darkened enough for white text (~4.6:1) */
+    --color-whatsapp: oklch(0.6 0.16 152);
+    --color-whatsapp-strong: oklch(0.52 0.15 152);
+
     /* Dark band */
     --color-ink-band: oklch(0.155 0.015 266);
     --color-ink-band-2: oklch(0.205 0.016 266);
@@ -51,25 +55,25 @@
     src: url('/fonts/hanken-grotesk-var.woff2') format('woff2');
 }
 @font-face {
-    font-family: 'Newsreader';
+    font-family: 'Poppins';
     font-style: normal;
     font-weight: 500;
     font-display: swap;
-    src: url('/fonts/newsreader-500.woff2') format('woff2');
+    src: url('/fonts/poppins-500.woff2') format('woff2');
 }
 @font-face {
-    font-family: 'Newsreader';
+    font-family: 'Poppins';
     font-style: normal;
     font-weight: 600;
     font-display: swap;
-    src: url('/fonts/newsreader-600.woff2') format('woff2');
+    src: url('/fonts/poppins-600.woff2') format('woff2');
 }
 @font-face {
-    font-family: 'Newsreader';
-    font-style: italic;
-    font-weight: 500;
+    font-family: 'Poppins';
+    font-style: normal;
+    font-weight: 700;
     font-display: swap;
-    src: url('/fonts/newsreader-500-italic.woff2') format('woff2');
+    src: url('/fonts/poppins-700.woff2') format('woff2');
 }
 
 /* --- Base -------------------------------------------------------------- */
@@ -107,10 +111,10 @@
 
     /* Display headings use the serif; balance wrapping for even lines. */
     .font-display {
-        font-family: var(--font-serif);
-        font-weight: 400;
-        letter-spacing: -0.015em;
-        line-height: 1.02;
+        font-family: var(--font-heading);
+        font-weight: 600;
+        letter-spacing: -0.025em;
+        line-height: 1.08;
         text-wrap: balance;
     }
 
@@ -198,6 +202,50 @@
         background: #fff;
     }
 
+    .btn-whatsapp {
+        background: var(--color-whatsapp);
+        color: #fff;
+    }
+    .btn-whatsapp:hover {
+        background: var(--color-whatsapp-strong);
+    }
+
+    /* GABHA ENTERPRISE wordmark logo */
+    .ge-logo {
+        display: inline-flex;
+        align-items: stretch;
+        font-family: var(--font-heading);
+        line-height: 1;
+        font-size: 0.9rem;
+        border: 1.5px solid currentColor;
+        border-radius: 3px;
+        overflow: hidden;
+        white-space: nowrap;
+        user-select: none;
+    }
+    .ge-logo__box {
+        display: flex;
+        align-items: center;
+        background: currentColor;
+        color: var(--ge-knock, #fff);
+        font-weight: 700;
+        letter-spacing: 0.04em;
+        padding: 0.5em 0.62em;
+    }
+    .ge-logo__word {
+        display: flex;
+        align-items: center;
+        color: currentColor;
+        font-weight: 600;
+        letter-spacing: 0.2em;
+        padding: 0.5em 0.5em 0.5em 0.68em;
+    }
+    @media (max-width: 380px) {
+        .ge-logo {
+            font-size: 0.8rem;
+        }
+    }
+
     /* Hairline rule — editorial divider */
     .rule {
         height: 1px;
@@ -225,6 +273,85 @@
     }
     .link-underline:hover::after {
         transform: scaleX(1);
+    }
+}
+
+/* --- Sticky WhatsApp button (primary contact CTA) --------------------- */
+@layer components {
+    .wa-fab {
+        position: fixed;
+        right: max(1rem, env(safe-area-inset-right));
+        bottom: max(1rem, env(safe-area-inset-bottom));
+        z-index: 40;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        height: 3.5rem;
+        width: 3.5rem;
+        border-radius: 999px;
+        background: var(--color-whatsapp);
+        color: #fff;
+        box-shadow: 0 14px 34px -10px oklch(0.6 0.16 152 / 0.6), 0 3px 8px -3px rgb(0 0 0 / 0.25);
+        transition: transform 0.25s var(--ease-out-quint), background-color 0.25s;
+    }
+    .wa-fab:hover {
+        background: var(--color-whatsapp-strong);
+        transform: translateY(-2px);
+    }
+    .wa-fab::after {
+        content: '';
+        position: absolute;
+        inset: 0;
+        border-radius: inherit;
+        z-index: -1;
+        animation: wa-pulse 2.6s ease-out infinite;
+    }
+    .wa-fab__label {
+        position: absolute;
+        right: calc(100% + 0.65rem);
+        padding: 0.42rem 0.7rem;
+        border-radius: 7px;
+        background: var(--color-ink);
+        color: var(--color-on-ink);
+        font-size: 0.8rem;
+        font-weight: 500;
+        white-space: nowrap;
+        opacity: 0;
+        transform: translateX(6px);
+        pointer-events: none;
+        transition: opacity 0.25s var(--ease-out-quint), transform 0.25s var(--ease-out-quint);
+    }
+    @media (hover: hover) {
+        .wa-fab:hover .wa-fab__label {
+            opacity: 1;
+            transform: none;
+        }
+    }
+    @media (max-width: 767px) {
+        .wa-fab__label {
+            display: none;
+        }
+        .wa-fab {
+            height: 3.25rem;
+            width: 3.25rem;
+        }
+    }
+}
+
+@keyframes wa-pulse {
+    0% {
+        box-shadow: 0 0 0 0 oklch(0.6 0.16 152 / 0.45);
+    }
+    70% {
+        box-shadow: 0 0 0 16px oklch(0.6 0.16 152 / 0);
+    }
+    100% {
+        box-shadow: 0 0 0 0 oklch(0.6 0.16 152 / 0);
+    }
+}
+@media (prefers-reduced-motion: reduce) {
+    .wa-fab::after {
+        animation: none;
     }
 }
 

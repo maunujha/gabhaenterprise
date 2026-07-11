@@ -22,7 +22,7 @@
     $finishing = ['Custom neck labels', 'Care & size labels', 'Branded hang tags', 'Custom polybags', 'Folding & barcoding', 'Retail & mailer packaging'];
 
     $terms = [
-        ['label' => 'Minimum order', 'value' => 'From 300 pieces per style'],
+        ['label' => 'Minimum order', 'value' => 'From 30 pieces per style'],
         ['label' => 'Size range', 'value' => 'XS – 3XL (extendable)'],
         ['label' => 'Sampling time', 'value' => '~15 days to first sample'],
         ['label' => 'Bulk lead time', 'value' => '30–45 days (typical, order-dependent)'],

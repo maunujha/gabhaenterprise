@@ -5,7 +5,7 @@
     $details = [
         'private-label' => ['Manufacturing under your brand and labels', 'Your designs, patterns, and specifications', 'Neck labels, care labels, hang tags applied', 'Retail-ready finishing and packing'],
         'oem' => ['Production to your tech pack and measurements', 'Pattern engineering and grading', 'Construction and tolerances to spec', 'Pre-production samples for sign-off'],
-        'bulk' => ['300 to 30,000+ pieces per style', 'Managed cutting and stitching lines', 'In-line and end-line quality checks', 'Consistent output across the full run'],
+        'bulk' => ['30 to 30,000+ pieces per style', 'Managed cutting and stitching lines', 'In-line and end-line quality checks', 'Consistent output across the full run'],
         'custom' => ['Development from sketches or reference samples', 'Pattern making and fit development', 'Trim and fabric sourcing to match', 'Iterative sampling until approved'],
         'fabric' => ['Heavyweight cotton, loopknit, fleece, blends', 'GSM, shrinkage and colourfastness testing', 'Sourcing matched to your price point', 'Lab-dip and shade approvals'],
         'printing' => ['Screen, DTG and puff printing', 'Colour matching to your reference', 'Wash-tested for crack and fade resistance', 'Placement checked panel by panel'],

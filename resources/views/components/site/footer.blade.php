@@ -9,7 +9,7 @@
             {{-- Brand + contact --}}
             <div class="lg:col-span-5">
                 <a href="{{ route('home') }}" class="text-on-ink inline-block" aria-label="Gabha Enterprise — home">
-                    <x-site.logo />
+                    <x-site.logo knockout="var(--color-ink-band)" />
                 </a>
                 <p class="mt-6 max-w-sm text-[0.98rem] leading-relaxed text-on-ink-muted">
                     Private-label and OEM apparel manufacturing for brands that care how a

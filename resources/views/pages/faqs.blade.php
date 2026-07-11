@@ -1,6 +1,6 @@
 @php
     $faqs = [
-        ['q' => 'What is your minimum order quantity (MOQ)?', 'a' => 'Our standard minimum is 300 pieces per style. Within that, you can usually split across colours and sizes. If you are a new brand testing the market, talk to us — we try to keep first runs accessible.'],
+        ['q' => 'What is your minimum order quantity (MOQ)?', 'a' => 'Our standard minimum is just 30 pieces per style — low enough for new brands to test the market. Within that you can usually split across colours and sizes, and scale to tens of thousands with the same partner.'],
         ['q' => 'Can you manufacture under my own brand and labels?', 'a' => 'Yes. Private-label manufacturing is core to what we do. We produce finished garments with your neck labels, care labels, and hang tags — you own the design and the brand, we handle the making.'],
         ['q' => 'What products and fabrics do you make?', 'a' => 'We specialise in knitwear and cut-and-sew apparel: oversized and classic t-shirts, hoodies, sweatshirts, polos, and custom styles. Fabrics range from single jersey and heavyweight cotton (up to 240 GSM) to French terry and fleece. See the Capabilities page for the full specification.'],
         ['q' => 'How long does sampling and production take?', 'a' => 'A first sample typically takes around 15 days. Bulk production usually runs 30–45 days after sample approval, depending on quantity, fabric availability, and decoration. We confirm exact timelines before you commit.'],
