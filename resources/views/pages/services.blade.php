@@ -59,6 +59,12 @@
                             </li>
                         @endforeach
                     </ul>
+
+                    <a href="{{ route('services.show', config('service_pages.'.$service['slug'].'.path')) }}"
+                       class="mt-8 inline-flex items-center gap-2 font-medium text-ink link-underline">
+                        Explore {{ $service['title'] }}
+                        <x-ui.icon name="arrow-right" :size="18" />
+                    </a>
                 </div>
             </section>
         @endforeach

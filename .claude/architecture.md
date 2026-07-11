@@ -42,6 +42,10 @@ routes/web.php → PageController@<page> → view('pages.<page>')
 - **`pages/`** — one Blade file per page (`home`, `about`, `services`, `capabilities`,
   `industries`, `why-choose-us`, `faqs`, `contact`). Each opens with a `@php` block reading
   `config('company')` and wraps content in `<x-layouts.app title=… description=…>`.
+- **`pages/service.blade.php`** — one template shared by all 9 dedicated service spokes
+  (`services.show`). Long-form, config-driven from `config/service_pages.php`; reuses `page-header`,
+  `section-title`, `cta-band`, and site tokens. Distinct section treatments (numbered process,
+  border-top benefits, accordion FAQs, divided related-links) — no repeated card grids.
 - **`components/layouts/app.blade.php`** — the master HTML layout: `<head>` (SEO meta, OG/Twitter,
   favicons, font preload, GTM/GA4, `@vite`, `<x-site.schema />`), skip-link, header, `{{ $slot }}`,
   footer, WhatsApp FAB. Accepts props: `title`, `description`, `canonical`, `ogImage`, `ogType`,
@@ -58,6 +62,10 @@ routes/web.php → PageController@<page> → view('pages.<page>')
 `config/company.php` holds structured arrays consumed across the site:
 `services` (9, each slug/icon/title/summary), `industries` (6), `stats` (4 headline figures),
 contact details, address, geo, hours, analytics IDs. Add/edit business content here, not in views.
+
+`config/service_pages.php` holds the long-form content for the dedicated service pages, keyed by the
+same slug as `company.services` (adds `path`, `seo_title`, `meta_description`, `intro`, `process`,
+`benefits`, `faqs`, `related`). Consumed only by `pages/service.blade.php`.
 
 ## Front-end
 

@@ -21,6 +21,28 @@ class PageController extends Controller
         return view('pages.services');
     }
 
+    public function service(string $service): View
+    {
+        $pages = config('service_pages');
+
+        // Resolve the content key from the SEO-friendly URL segment.
+        $slug = collect($pages)->search(fn (array $p) => $p['path'] === $service);
+        abort_if($slug === false, 404);
+
+        $page = $pages[$slug];
+        $bySlug = collect(config('company.services'))->keyBy('slug');
+        $meta = $bySlug[$slug];
+
+        $related = collect($page['related'])->map(fn (string $r) => [
+            'title'   => $bySlug[$r]['title'],
+            'summary' => $bySlug[$r]['summary'],
+            'icon'    => $bySlug[$r]['icon'],
+            'path'    => $pages[$r]['path'],
+        ])->all();
+
+        return view('pages.service', compact('slug', 'page', 'meta', 'related'));
+    }
+
     public function capabilities(): View
     {
         return view('pages.capabilities');

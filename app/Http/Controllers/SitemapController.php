@@ -31,6 +31,15 @@ class SitemapController extends Controller
             'freq'     => $u['freq'],
         ], $this->urls);
 
+        // Dedicated service pages (hub-and-spoke under /manufacturing-services).
+        foreach (config('service_pages') as $page) {
+            $entries[] = [
+                'loc'      => route('services.show', $page['path']),
+                'priority' => '0.8',
+                'freq'     => 'monthly',
+            ];
+        }
+
         return response()
             ->view('sitemap', ['entries' => $entries, 'lastmod' => now()->toAtomString()])
             ->header('Content-Type', 'application/xml');

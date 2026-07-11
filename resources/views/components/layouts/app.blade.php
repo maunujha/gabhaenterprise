@@ -3,6 +3,7 @@
     'description' => null,
     'canonical' => null,
     'ogImage' => null,
+    'ogImageAlt' => null,
     'ogType' => 'website',
     'noindex' => false,
 ])
@@ -15,6 +16,7 @@
     $desc = $description ?: $company['description'];
     $canonicalUrl = $canonical ?: url()->current();
     $image = url($ogImage ?: '/og-image.png');
+    $imageAlt = $ogImageAlt ?: $company['name'].' — '.$company['tagline'];
 
     $gtmId = $company['gtm_id'] ?? null;
     $ga4Id = $company['ga4_id'] ?? null;
@@ -22,7 +24,7 @@
 @endphp
 
 <!DOCTYPE html>
-<html lang="en" class="no-js">
+<html lang="en-IN" class="no-js">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -49,7 +51,7 @@
     @if ($noindex)
         <meta name="robots" content="noindex, nofollow">
     @else
-        <meta name="robots" content="index, follow, max-image-preview:large">
+        <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
     @endif
 
     {{-- Open Graph --}}
@@ -61,6 +63,7 @@
     <meta property="og:image" content="{{ $image }}">
     <meta property="og:image:width" content="1200">
     <meta property="og:image:height" content="630">
+    <meta property="og:image:alt" content="{{ $imageAlt }}">
     <meta property="og:locale" content="en_IN">
 
     {{-- Twitter --}}
@@ -68,6 +71,7 @@
     <meta name="twitter:title" content="{{ $pageTitle }}">
     <meta name="twitter:description" content="{{ $desc }}">
     <meta name="twitter:image" content="{{ $image }}">
+    <meta name="twitter:image:alt" content="{{ $imageAlt }}">
 
     <meta name="theme-color" content="#ffffff">
 

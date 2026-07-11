@@ -45,9 +45,9 @@
                 <nav aria-label="Services">
                     <h2 class="text-[0.72rem] uppercase tracking-[0.18em] text-on-ink-muted">Services</h2>
                     <ul class="mt-4 space-y-3 text-[0.95rem]">
-                        <li><a href="{{ route('services') }}#private-label" class="text-on-ink/90 hover:text-white transition-colors">Private label</a></li>
-                        <li><a href="{{ route('services') }}#oem" class="text-on-ink/90 hover:text-white transition-colors">OEM manufacturing</a></li>
-                        <li><a href="{{ route('services') }}#printing" class="text-on-ink/90 hover:text-white transition-colors">Printing &amp; embroidery</a></li>
+                        <li><a href="{{ route('services.show', config('service_pages.private-label.path')) }}" class="text-on-ink/90 hover:text-white transition-colors">Private label</a></li>
+                        <li><a href="{{ route('services.show', config('service_pages.oem.path')) }}" class="text-on-ink/90 hover:text-white transition-colors">OEM manufacturing</a></li>
+                        <li><a href="{{ route('services.show', config('service_pages.printing.path')) }}" class="text-on-ink/90 hover:text-white transition-colors">Printing</a></li>
                         <li><a href="{{ route('services') }}" class="text-on-ink/90 hover:text-white transition-colors">All services</a></li>
                     </ul>
                 </nav>
