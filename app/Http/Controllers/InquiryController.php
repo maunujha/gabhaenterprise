@@ -14,8 +14,15 @@ class InquiryController extends Controller
     {
         $inquiry = Inquiry::create($request->inquiryData());
 
-        Mail::to(config('company.inquiry_recipient'))
-            ->send(new InquiryReceived($inquiry));
+        // The lead is captured the moment it is persisted; the notification
+        // email is a convenience. A mail/transport failure must never lose
+        // the inquiry or 500 the visitor — log it and carry on.
+        try {
+            Mail::to(config('company.inquiry_recipient'))
+                ->send(new InquiryReceived($inquiry));
+        } catch (\Throwable $e) {
+            report($e);
+        }
 
         return back()->with('inquiry_sent', true);
     }
