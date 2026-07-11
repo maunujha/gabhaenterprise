@@ -59,10 +59,32 @@ function initHeader() {
     window.addEventListener('scroll', onScroll, { passive: true });
 }
 
+/* Lead-intent tracking: push dataLayer events on WhatsApp + call clicks so
+   GTM/GA4 can record them as conversions. Delegated + capture phase so it
+   fires before the link navigates away. Safe with or without GTM present. */
+function initLeadTracking() {
+    window.dataLayer = window.dataLayer || [];
+    document.addEventListener(
+        'click',
+        function (e) {
+            var a = e.target.closest && e.target.closest('a[href]');
+            if (!a) return;
+            var href = a.getAttribute('href') || '';
+            if (href.indexOf('wa.me') !== -1 || href.indexOf('whatsapp.com') !== -1) {
+                window.dataLayer.push({ event: 'whatsapp_click', link_url: href });
+            } else if (href.lastIndexOf('tel:', 0) === 0) {
+                window.dataLayer.push({ event: 'call_click', link_url: href });
+            }
+        },
+        true
+    );
+}
+
 function init() {
     initReveal();
     initNav();
     initHeader();
+    initLeadTracking();
 }
 
 if (document.readyState !== 'loading') init();

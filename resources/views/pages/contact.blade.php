@@ -64,6 +64,8 @@
                                 <p class="mt-1 text-[0.95rem] text-ink-soft">We’ve received your message and will reply within one business day. For anything urgent, call or WhatsApp us directly.</p>
                             </div>
                         </div>
+                        {{-- Lead conversion event — fires once on the thank-you view. --}}
+                        <script>window.dataLayer=window.dataLayer||[];window.dataLayer.push({event:'generate_lead',form:'contact'});</script>
                     @endif
 
                     @error('website')
