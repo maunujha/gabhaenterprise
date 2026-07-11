@@ -35,11 +35,11 @@
 
         {{-- Mobile toggle --}}
         <button type="button"
-                class="group lg:hidden relative z-[65] inline-flex items-center justify-center w-11 h-11 -mr-2 text-ink"
+                class="lg:hidden relative z-[65] inline-flex items-center justify-center w-11 h-11 -mr-2 text-ink"
                 data-nav-toggle aria-expanded="false" aria-controls="mobile-nav" aria-label="Toggle menu">
             <span class="sr-only">Menu</span>
-            <x-ui.icon name="menu" :size="26" class="group-aria-[expanded=true]:hidden" />
-            <x-ui.icon name="close" :size="26" class="hidden group-aria-[expanded=true]:block" />
+            <span class="nav-toggle-icon nav-toggle-icon--open"><x-ui.icon name="menu" :size="26" /></span>
+            <span class="nav-toggle-icon nav-toggle-icon--close"><x-ui.icon name="close" :size="26" /></span>
         </button>
     </div>
 </header>
