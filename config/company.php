@@ -54,6 +54,13 @@ return [
 
     'founded' => '2019',
 
+    // Analytics & Search Console — public IDs, set in .env.
+    // If gtm_id is set, GTM loads (put GA4 inside GTM); otherwise ga4_id
+    // loads GA4 directly via gtag. Never both, to avoid double-counting.
+    'gtm_id' => env('GTM_ID'),
+    'ga4_id' => env('GA4_ID'),
+    'google_site_verification' => env('GOOGLE_SITE_VERIFICATION'),
+
     // Headline capability figures (kept factual + conservative) ----------
     'stats' => [
         ['value' => '50+',   'label' => 'Brands manufactured for'],

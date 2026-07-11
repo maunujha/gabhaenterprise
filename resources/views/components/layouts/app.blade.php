@@ -15,6 +15,10 @@
     $desc = $description ?: $company['description'];
     $canonicalUrl = $canonical ?: url()->current();
     $image = url($ogImage ?: '/og-image.png');
+
+    $gtmId = $company['gtm_id'] ?? null;
+    $ga4Id = $company['ga4_id'] ?? null;
+    $gsv = $company['google_site_verification'] ?? null;
 @endphp
 
 <!DOCTYPE html>
@@ -22,6 +26,21 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    @if ($gsv)
+        <meta name="google-site-verification" content="{{ $gsv }}">
+    @endif
+
+    @if ($gtmId)
+        {{-- Google Tag Manager --}}
+        <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer','{{ $gtmId }}');</script>
+        {{-- End Google Tag Manager --}}
+    @elseif ($ga4Id)
+        {{-- Google Analytics 4 --}}
+        <script async src="https://www.googletagmanager.com/gtag/js?id={{ $ga4Id }}"></script>
+        <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','{{ $ga4Id }}');</script>
+    @endif
+
     <script>document.documentElement.classList.replace('no-js','js')</script>
 
     <title>{{ $pageTitle }}</title>
@@ -67,6 +86,11 @@
     {{ $head ?? '' }}
 </head>
 <body class="min-h-screen antialiased">
+    @if ($gtmId)
+        {{-- Google Tag Manager (noscript) --}}
+        <noscript><iframe src="https://www.googletagmanager.com/ns.html?id={{ $gtmId }}" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+    @endif
+
     <a href="#main" class="sr-only focus:not-sr-only focus:absolute focus:z-[70] focus:top-4 focus:left-4 focus:bg-ink focus:text-on-ink focus:px-4 focus:py-2 focus:rounded-md">Skip to content</a>
 
     <x-site.header />
