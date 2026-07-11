@@ -1,0 +1,279 @@
+@import 'tailwindcss';
+
+@source '../**/*.blade.php';
+@source '../**/*.js';
+
+/* ==========================================================================
+   Gabha Enterprise — "Ink & Indigo"
+   Premium editorial: monochrome ink on white, one deep indigo accent.
+   All colors OKLCH. Tokens surface as Tailwind utilities (bg-*, text-*,
+   border-*) and as CSS vars for hand-written component rules.
+   ========================================================================== */
+
+@theme {
+    --font-sans: 'Hanken Grotesk', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
+    --font-serif: 'Newsreader', ui-serif, Georgia, 'Times New Roman', serif;
+
+    /* Surfaces */
+    --color-bg: oklch(1 0 0);
+    --color-surface: oklch(0.977 0.004 265);
+    --color-surface-2: oklch(0.955 0.006 265);
+
+    /* Ink ramp */
+    --color-ink: oklch(0.17 0.013 265);
+    --color-ink-soft: oklch(0.31 0.015 265);
+    --color-muted: oklch(0.435 0.017 265);
+
+    /* Lines */
+    --color-line: oklch(0.905 0.006 265);
+    --color-line-strong: oklch(0.85 0.008 265);
+
+    /* Brand — deep indigo (indigo-dye heritage), used sparingly */
+    --color-brand: oklch(0.45 0.132 264);
+    --color-brand-strong: oklch(0.38 0.13 264);
+    --color-brand-tint: oklch(0.955 0.028 264);
+
+    /* Dark band */
+    --color-ink-band: oklch(0.155 0.015 266);
+    --color-ink-band-2: oklch(0.205 0.016 266);
+    --color-on-ink: oklch(0.965 0.004 265);
+    --color-on-ink-muted: oklch(0.72 0.012 265);
+
+    --ease-out-quint: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* --- Fonts (self-hosted, no third-party requests) ---------------------- */
+@font-face {
+    font-family: 'Hanken Grotesk';
+    font-style: normal;
+    font-weight: 100 900;
+    font-display: swap;
+    src: url('/fonts/hanken-grotesk-var.woff2') format('woff2');
+}
+@font-face {
+    font-family: 'Newsreader';
+    font-style: normal;
+    font-weight: 500;
+    font-display: swap;
+    src: url('/fonts/newsreader-500.woff2') format('woff2');
+}
+@font-face {
+    font-family: 'Newsreader';
+    font-style: normal;
+    font-weight: 600;
+    font-display: swap;
+    src: url('/fonts/newsreader-600.woff2') format('woff2');
+}
+@font-face {
+    font-family: 'Newsreader';
+    font-style: italic;
+    font-weight: 500;
+    font-display: swap;
+    src: url('/fonts/newsreader-500-italic.woff2') format('woff2');
+}
+
+/* --- Base -------------------------------------------------------------- */
+@layer base {
+    html {
+        scroll-behavior: smooth;
+        -webkit-text-size-adjust: 100%;
+    }
+
+    body {
+        background-color: var(--color-bg);
+        color: var(--color-ink);
+        font-family: var(--font-sans);
+        line-height: 1.65;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+        text-rendering: optimizeLegibility;
+    }
+
+    ::selection {
+        background: var(--color-brand);
+        color: #fff;
+    }
+
+    :focus-visible {
+        outline: 2px solid var(--color-brand);
+        outline-offset: 2px;
+        border-radius: 2px;
+    }
+
+    a {
+        color: inherit;
+        text-decoration: none;
+    }
+
+    /* Display headings use the serif; balance wrapping for even lines. */
+    .font-display {
+        font-family: var(--font-serif);
+        font-weight: 400;
+        letter-spacing: -0.015em;
+        line-height: 1.02;
+        text-wrap: balance;
+    }
+
+    p {
+        text-wrap: pretty;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+        html {
+            scroll-behavior: auto;
+        }
+    }
+}
+
+/* --- Components (plain CSS on tokens) ---------------------------------- */
+@layer components {
+    /* Consistent page gutter + max width */
+    .container-x {
+        width: 100%;
+        max-width: 76rem;
+        margin-inline: auto;
+        padding-inline: 1.5rem;
+    }
+    @media (min-width: 1024px) {
+        .container-x {
+            padding-inline: 2.5rem;
+        }
+    }
+
+    .measure {
+        max-width: 68ch;
+    }
+
+    /* Buttons */
+    .btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.5rem;
+        font-weight: 500;
+        font-size: 0.95rem;
+        line-height: 1;
+        padding: 0.85rem 1.5rem;
+        border-radius: 0.5rem;
+        border: 1px solid transparent;
+        transition: transform 0.25s var(--ease-out-quint),
+            background-color 0.25s var(--ease-out-quint),
+            border-color 0.25s var(--ease-out-quint), color 0.25s var(--ease-out-quint);
+        will-change: transform;
+    }
+    .btn:active {
+        transform: translateY(1px);
+    }
+
+    .btn-primary {
+        background: var(--color-brand);
+        color: #fff;
+    }
+    .btn-primary:hover {
+        background: var(--color-brand-strong);
+    }
+
+    .btn-ink {
+        background: var(--color-ink);
+        color: var(--color-on-ink);
+    }
+    .btn-ink:hover {
+        background: var(--color-ink-band-2);
+    }
+
+    .btn-ghost {
+        background: transparent;
+        color: var(--color-ink);
+        border-color: var(--color-line-strong);
+    }
+    .btn-ghost:hover {
+        border-color: var(--color-ink);
+    }
+
+    .btn-on-ink {
+        background: var(--color-on-ink);
+        color: var(--color-ink);
+    }
+    .btn-on-ink:hover {
+        background: #fff;
+    }
+
+    /* Hairline rule — editorial divider */
+    .rule {
+        height: 1px;
+        background: var(--color-line);
+        border: 0;
+    }
+
+    /* Animated underline text link */
+    .link-underline {
+        position: relative;
+        color: var(--color-ink);
+        font-weight: 500;
+    }
+    .link-underline::after {
+        content: '';
+        position: absolute;
+        left: 0;
+        bottom: -2px;
+        width: 100%;
+        height: 1px;
+        background: currentColor;
+        transform: scaleX(0);
+        transform-origin: left;
+        transition: transform 0.4s var(--ease-out-quint);
+    }
+    .link-underline:hover::after {
+        transform: scaleX(1);
+    }
+}
+
+/* --- Header + mobile nav ---------------------------------------------- */
+@layer components {
+    .site-header {
+        position: sticky;
+        top: 0;
+        z-index: 50;
+        background: var(--color-bg);
+        border-bottom: 1px solid transparent;
+        transition: box-shadow 0.3s var(--ease-out-quint), border-color 0.3s var(--ease-out-quint);
+    }
+    .site-header.is-scrolled {
+        border-bottom-color: var(--color-line);
+        box-shadow: 0 10px 30px -24px oklch(0.2 0.03 265 / 0.55);
+    }
+
+    .nav-panel {
+        position: fixed;
+        inset: 0;
+        z-index: 60;
+        background: var(--color-bg);
+        opacity: 0;
+        visibility: hidden;
+        transform: translateY(-6px);
+        transition: opacity 0.3s var(--ease-out-quint), transform 0.35s var(--ease-out-quint),
+            visibility 0.3s;
+    }
+    .nav-panel[data-open='true'] {
+        opacity: 1;
+        visibility: visible;
+        transform: none;
+    }
+}
+
+/* --- Scroll reveal ----------------------------------------------------
+   Content is visible by default; JS opts in by adding [data-reveal].
+   The observer sets .is-in to animate. If JS/observer never runs, the
+   fallback rule keeps everything visible.
+   --------------------------------------------------------------------- */
+@media (prefers-reduced-motion: no-preference) {
+    html.js [data-reveal] {
+        opacity: 0;
+        transform: translateY(16px);
+        transition: opacity 0.7s var(--ease-out-quint), transform 0.7s var(--ease-out-quint);
+    }
+    html.js [data-reveal].is-in {
+        opacity: 1;
+        transform: none;
+    }
+}
