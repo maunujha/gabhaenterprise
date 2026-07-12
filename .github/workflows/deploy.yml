@@ -94,9 +94,9 @@ jobs:
     runs-on: ubuntu-latest
     # Deploy ONLY on a real push/dispatch to main — never on a pull_request event.
     if: github.event_name != 'pull_request' && github.ref == 'refs/heads/main'
-    environment:
-      name: production
-      url: ${{ secrets.HEALTHCHECK_URL }}
+    # NOTE: `secrets` is not an allowed context in `environment.url`, so we don't
+    # set a url here (that would make the whole workflow fail to parse).
+    environment: production
     steps:
       - name: Deploy over SSH (run deploy/deploy.sh on the server)
         uses: appleboy/ssh-action@v1.2.2
