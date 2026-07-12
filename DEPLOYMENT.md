@@ -278,6 +278,8 @@ Protect `main` so only reviewed code deploys:
 - ✅ **Restrict deletions** of `main`.
 - Optional: require signed commits; require linear history.
 
-> Tip: since deploy runs *after* merge, the status check gates **merge**, not the
-> deploy. That's intended — review + green checks happen on the PR, then merging
-> to `main` ships it.
+> Tip: the workflow runs on `pull_request` into `main`, so the **`Pre-deploy checks`**
+> status check runs *on the PR* (pre-merge) and gates the merge. Only after the merge
+> lands on `main` does the `deploy` job run and ship it. The check appears in the
+> branch-rule dropdown once it has run once — open your first `development → main` PR,
+> let it run, then add it to the rule.
