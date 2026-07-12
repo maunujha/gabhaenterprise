@@ -31,6 +31,28 @@ class SitemapController extends Controller
             'freq'     => $u['freq'],
         ], $this->urls);
 
+        // Dedicated service pages (hub-and-spoke under /manufacturing-services).
+        foreach (config('service_pages') as $page) {
+            $entries[] = [
+                'loc'      => route('services.show', $page['path']),
+                'priority' => '0.8',
+                'freq'     => 'monthly',
+            ];
+        }
+
+        // Blog — only PUBLISHED posts (drafts stay out of the sitemap).
+        $published = array_filter(config('blog.posts'), fn ($p) => ($p['status'] ?? '') === 'published');
+        if ($published !== []) {
+            $entries[] = ['loc' => route('blog.index'), 'priority' => '0.7', 'freq' => 'weekly'];
+            foreach ($published as $slug => $post) {
+                $entries[] = [
+                    'loc'      => route('blog.show', $slug),
+                    'priority' => ($post['type'] ?? '') === 'pillar' ? '0.8' : '0.6',
+                    'freq'     => 'monthly',
+                ];
+            }
+        }
+
         return response()
             ->view('sitemap', ['entries' => $entries, 'lastmod' => now()->toAtomString()])
             ->header('Content-Type', 'application/xml');

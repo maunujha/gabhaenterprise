@@ -55,6 +55,7 @@ known path → known folder → filename → scoped search → repo-wide search 
 | `commands.md` | any composer / artisan / npm / git / server command |
 | `coding-style.md` | naming, patterns, how to add a page/component/service |
 | `seo.md` | meta, canonical, JSON-LD, sitemap, robots, GTM/GA4 |
+| `content.md` | blog/content hub, pillar & cluster posts, draft/publish workflow |
 | `integrations.md` | mail/SMTP, analytics, Search Console, external services |
 | `troubleshooting.md` | recurring build/deploy/cache/permission problems |
 | `decisions.md` | *why* something is built the way it is |

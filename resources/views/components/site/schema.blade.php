@@ -2,27 +2,61 @@
     $c = config('company');
     $home = route('home');
 
+    // Shared image/logo objects — reused across entities so the same asset is
+    // described once and stays consistent.
+    $logo = url('/favicon.svg');
+    $ogImage = [
+        '@type' => 'ImageObject',
+        'url' => url('/og-image.png'),
+        'width' => 1200,
+        'height' => 630,
+    ];
+
+    $postalAddress = [
+        '@type' => 'PostalAddress',
+        'streetAddress' => $c['address']['street'],
+        'addressLocality' => $c['address']['locality'],
+        'addressRegion' => $c['address']['region'],
+        'postalCode' => $c['address']['postal'],
+        'addressCountry' => $c['address']['country'],
+    ];
+
     $org = [
         '@type' => 'Organization',
         '@id' => $home.'#organization',
         'name' => $c['legal_name'],
         'url' => $home,
-        'logo' => url('/favicon.svg'),
-        'image' => url('/og-image.png'),
+        'logo' => $logo,
+        'image' => $ogImage,
         'description' => $c['description'],
+        'slogan' => $c['tagline'],
         'email' => $c['email'],
         'telephone' => $c['phone_e164'],
         'foundingDate' => $c['founded'],
-        'address' => [
-            '@type' => 'PostalAddress',
-            'streetAddress' => $c['address']['street'],
-            'addressLocality' => $c['address']['locality'],
-            'addressRegion' => $c['address']['region'],
-            'postalCode' => $c['address']['postal'],
-            'addressCountry' => $c['address']['country'],
-        ],
+        'address' => $postalAddress,
+        'contactPoint' => [[
+            '@type' => 'ContactPoint',
+            'contactType' => 'sales',
+            'telephone' => $c['phone_e164'],
+            'email' => $c['email'],
+            'areaServed' => 'IN',
+            'availableLanguage' => ['en', 'hi'],
+        ]],
         'brand' => ['@type' => 'Brand', 'name' => $c['brand']],
         'sameAs' => array_values($c['links']),
+        'hasOfferCatalog' => [
+            '@type' => 'OfferCatalog',
+            'name' => 'Apparel Manufacturing Services',
+            'itemListElement' => array_map(fn ($s) => [
+                '@type' => 'Offer',
+                'itemOffered' => [
+                    '@type' => 'Service',
+                    'name' => $s['title'],
+                    'description' => $s['summary'],
+                    'provider' => ['@id' => $home.'#organization'],
+                ],
+            ], $c['services']),
+        ],
     ];
 
     $localBusiness = [
@@ -30,19 +64,26 @@
         '@id' => $home.'#localbusiness',
         'name' => $c['legal_name'],
         'url' => $home,
-        'image' => url('/og-image.png'),
+        'image' => $ogImage,
+        'logo' => $logo,
         'email' => $c['email'],
         'telephone' => $c['phone_e164'],
         'priceRange' => '₹₹',
+        'currenciesAccepted' => 'INR',
         'parentOrganization' => ['@id' => $home.'#organization'],
-        'address' => $org['address'],
+        'address' => $postalAddress,
         'geo' => [
             '@type' => 'GeoCoordinates',
             'latitude' => $c['geo']['lat'],
             'longitude' => $c['geo']['lng'],
         ],
         'areaServed' => ['@type' => 'Country', 'name' => 'India'],
-        'openingHours' => 'Mo-Sa 10:00-19:00',
+        'openingHoursSpecification' => [[
+            '@type' => 'OpeningHoursSpecification',
+            'dayOfWeek' => ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
+            'opens' => '10:00',
+            'closes' => '19:00',
+        ]],
     ];
 
     $website = [

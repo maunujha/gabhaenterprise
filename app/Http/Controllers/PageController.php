@@ -21,6 +21,36 @@ class PageController extends Controller
         return view('pages.services');
     }
 
+    public function service(string $service): View
+    {
+        $pages = config('service_pages');
+
+        // Resolve the content key from the SEO-friendly URL segment.
+        $slug = collect($pages)->search(fn (array $p) => $p['path'] === $service);
+        abort_if($slug === false, 404);
+
+        $page = $pages[$slug];
+        $bySlug = collect(config('company.services'))->keyBy('slug');
+        $meta = $bySlug[$slug];
+
+        $related = collect($page['related'])->map(fn (string $r) => [
+            'title'   => $bySlug[$r]['title'],
+            'summary' => $bySlug[$r]['summary'],
+            'icon'    => $bySlug[$r]['icon'],
+            'path'    => $pages[$r]['path'],
+        ])->all();
+
+        // Reverse link: published guides that reference this service.
+        $guides = [];
+        foreach (config('blog.posts') as $bslug => $bp) {
+            if (($bp['status'] ?? '') === 'published' && in_array($slug, $bp['related_services'] ?? [], true)) {
+                $guides[] = ['slug' => $bslug, 'title' => $bp['h1'], 'excerpt' => $bp['excerpt']];
+            }
+        }
+
+        return view('pages.service', compact('slug', 'page', 'meta', 'related', 'guides'));
+    }
+
     public function capabilities(): View
     {
         return view('pages.capabilities');

@@ -22,25 +22,50 @@ restarting/reloading php8.3-fpm affects **both** apps.)
 
 ## Git workflow
 
-GitHub `main` is source of truth. The deploy does `git reset --hard origin/main` — so the server
-tree is **disposable**; never edit or commit on the server. Push to `main`, then deploy.
+GitHub `main` is source of truth; `development` is the integration branch (feature → `development` →
+PR → review → merge to `main`). The deploy does `git reset --hard origin/main` — so the server tree
+is **disposable**; never edit or commit on the server.
+
+## CI/CD — automatic deploy (`.github/workflows/deploy.yml`)
+
+Merging a PR into `main` (or `workflow_dispatch`) triggers GitHub Actions:
+
+1. **`quality`** job (GitHub-hosted runner, must pass): `composer validate --strict`, `composer
+   install`, `php -l` scan, `config:cache` validation, `php artisan test`, **Pint advisory**
+   (`continue-on-error` — codebase isn't Pint-clean; PHPStan not installed).
+2. **`deploy`** job (`needs: quality`): SSH to VPS via `appleboy/ssh-action`, `cd $APP_DIR`,
+   `bash deploy/deploy.sh`; then an external `curl` HTTP 200 check with retries.
+
+Secrets: `SERVER_HOST`, `SERVER_USER`, `SERVER_SSH_KEY` (required); `SERVER_PORT`, `SERVER_APP_DIR`,
+`HEALTHCHECK_URL` (optional). `concurrency: production-deploy` (no overlap, never cancels in-flight).
+Full details, branch-protection, rollback & troubleshooting → **`DEPLOYMENT.md`** (repo root).
 
 ## Deploy (one command)
 
 ```bash
-bash deploy/deploy.sh          # run on server as `deploy`; APP_DIR/BRANCH overridable via env
+bash deploy/deploy.sh          # run on server as `deploy`; APP_DIR/BRANCH/HEALTHCHECK_URL via env
+bash deploy/rollback.sh [sha]  # manual rollback (code only) to HEAD~1 or a given commit
 ```
 
-`deploy/deploy.sh` runs, in order (`set -euo pipefail`, auto `artisan up` on exit via trap):
+`deploy/deploy.sh` is idempotent + self-rolling-back (`set -euo pipefail`; single EXIT trap rolls
+CODE back to the pre-deploy SHA on any failure, always leaves maintenance off). Order:
 
 1. `php artisan down --retry=15` (maintenance on)
 2. `git fetch origin main` → `git reset --hard origin/main`
 3. `composer install --no-dev --optimize-autoloader --no-interaction --prefer-dist`
 4. `npm ci --no-audit --no-fund` → `npm run build`
 5. `php artisan migrate --force`
-6. `php artisan optimize:clear` → `config:cache` → `route:cache` → `view:cache`
-7. Fix perms: `chmod -R ug+rwX storage bootstrap/cache`; dirs → `2775`
-8. `php artisan up` (maintenance off)
+6. `php artisan storage:link` (idempotent; app doesn't use public disk, so advisory)
+7. `php artisan optimize:clear` → `config:cache` → `route:cache` → `view:cache`
+8. `php artisan queue:restart` (graceful; no-op if no workers)
+9. Fix perms: `chmod -R ug+rwX storage bootstrap/cache`; dirs → `2775`
+10. `php artisan up` (maintenance off)
+11. Health checks: Laravel boots + `APP_KEY` set, no pending migrations, homepage 200 (server-local
+    `--resolve`; hairpin-NAT failures warn, not fatal). Critical failure → auto-rollback.
+
+**Rollback:** in-place git model (no release dirs). Code auto-reverts to previous SHA on failure;
+**migrations are never auto-rolled-back** (unsafe) — restore DB from backup or `migrate:rollback`
+manually. See `decisions.md`.
 
 ## nginx
 
