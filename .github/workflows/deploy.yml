@@ -61,6 +61,20 @@ jobs:
       - name: Install dependencies (with dev, for tooling + tests)
         run: composer install --prefer-dist --no-interaction --no-progress
 
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+
+      - name: Install npm dependencies
+        run: npm ci --no-audit --no-fund
+
+      - name: Build front-end assets (Vite)
+        # Required so Blade @vite() finds public/build/manifest.json during tests;
+        # also validates the front-end build before we ever deploy.
+        run: npm run build
+
       - name: PHP syntax check (php -l)
         run: |
           set -euo pipefail
