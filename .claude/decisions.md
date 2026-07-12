@@ -58,8 +58,27 @@ cron, Docker, system packages) require explicit confirmation first, with impact 
 *Why:* a shared server means a careless global command or wrong directory can take down an unrelated
 production site. *Implication:* prefer project-local commands; avoid restarting shared services.
 
-## Manual deploy via `git reset --hard origin/main`
+## Deploy via `git reset --hard origin/main` (in-place, no release dirs)
 
 Deploy resets the server tree hard to `origin/main` (server tree is disposable). Guarantees the
 server matches GitHub exactly; prevents drift from ad-hoc server edits.
 *Implication:* never edit/commit on the server — all changes go through GitHub `main`.
+
+## Automatic deploy via GitHub Actions on merge to `main`
+
+`.github/workflows/deploy.yml` deploys on push to `main` (PR from `development` merged): a `quality`
+gate (composer validate, `php -l`, config validation, tests, Pint advisory) then an SSH `deploy` job
+that runs `deploy/deploy.sh`. *Why:* removes manual/error-prone deploys, enforces review + green
+checks before shipping. *Alternatives rejected:* webhook-pull daemon (more moving parts);
+release-directory/symlink atomic deploy (larger server-layout change than a small marketing site
+warrants). *Pint is advisory* (`continue-on-error`) because the existing code isn't Pint-clean —
+blocking would stop every deploy over cosmetics.
+
+## Rollback = code-only revert to previous SHA; migrations never auto-reverted
+
+In-place git deploy means no `releases/` to symlink-swap. Safety instead: `deploy.sh` records the
+pre-deploy SHA and, on any failure (incl. health checks), resets code back + rebuilds + leaves
+maintenance off — never a half-updated tree. `deploy/rollback.sh` does the same manually to any
+commit. *Migrations are deliberately NOT auto-rolled-back* — a `down()` can drop data; restore DB
+from backup or run `migrate:rollback` by hand. *Why:* an automated destructive migration revert is
+more dangerous than a brief manual step.

@@ -60,8 +60,13 @@ vendor/bin/pint --dirty                 # format only changed files
 ## Deploy (VPS, as `deploy` user)
 
 ```bash
-bash deploy/deploy.sh                   # full production deploy (see deployment.md)
+bash deploy/deploy.sh                   # full production deploy (see deployment.md / DEPLOYMENT.md)
+bash deploy/rollback.sh                 # roll back code to previous commit (HEAD~1)
+bash deploy/rollback.sh <commit-sha>    # roll back code to a specific commit
 ```
+
+Auto-deploy: merging a PR into `main` runs `.github/workflows/deploy.yml` (quality gate → SSH →
+`deploy/deploy.sh`). Trigger manually via GitHub → Actions → Run workflow. See `DEPLOYMENT.md`.
 
 ## Git
 
