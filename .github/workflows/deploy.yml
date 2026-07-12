@@ -1,0 +1,133 @@
+name: Deploy (production)
+
+# Auto-deploys Gabha Enterprise to the VPS when code lands on `main`
+# (i.e. a Pull Request from `development` was reviewed and merged).
+#
+# Flow:  feature → development → PR → review → merge to main → this workflow.
+#
+# Two jobs:
+#   1. quality — pre-deploy checks on a GitHub-hosted runner (must pass).
+#   2. deploy  — SSH into the VPS and run deploy/deploy.sh (only if quality passed).
+#
+# See DEPLOYMENT.md for secrets, rollback, and how to disable auto-deploy.
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch: {}     # allow a manual re-run from the Actions tab
+
+# Never run two production deploys at once, and never cancel one mid-flight.
+concurrency:
+  group: production-deploy
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
+jobs:
+  # ---------------------------------------------------------------------------
+  # 1. Pre-deploy quality gate
+  # ---------------------------------------------------------------------------
+  quality:
+    name: Pre-deploy checks
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup PHP 8.3
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          extensions: mbstring, dom, curl, xml, bcmath, pdo, sqlite3, pdo_sqlite, fileinfo, tokenizer, intl
+          coverage: none
+          tools: composer:v2
+
+      - name: Verify PHP version
+        run: php -v
+
+      - name: Validate composer.json / composer.lock
+        run: composer validate --strict
+
+      - name: Cache Composer packages
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/composer/files
+          key: composer-${{ hashFiles('composer.lock') }}
+          restore-keys: composer-
+
+      - name: Install dependencies (with dev, for tooling + tests)
+        run: composer install --prefer-dist --no-interaction --no-progress
+
+      - name: PHP syntax check (php -l)
+        run: |
+          set -euo pipefail
+          find app config database routes tests -name '*.php' -print0 \
+            | xargs -0 -n1 -P4 php -l >/dev/null
+          echo "All PHP files parsed OK"
+
+      - name: Validate Laravel configuration
+        run: |
+          set -euo pipefail
+          cp .env.example .env
+          php artisan key:generate
+          php artisan config:cache      # fails if any config file is invalid
+          php artisan config:clear
+
+      - name: Run tests (PHPUnit)
+        run: php artisan test
+
+      # Advisory only: the existing codebase is not yet Pint-clean, so style
+      # issues must NOT block a production deploy. Fix them in a separate change.
+      - name: Code style (Laravel Pint — advisory)
+        continue-on-error: true
+        run: vendor/bin/pint --test
+
+  # ---------------------------------------------------------------------------
+  # 2. Deploy to the VPS over SSH
+  # ---------------------------------------------------------------------------
+  deploy:
+    name: Deploy to VPS
+    needs: quality
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main'
+    environment:
+      name: production
+      url: ${{ secrets.HEALTHCHECK_URL }}
+    steps:
+      - name: Deploy over SSH (run deploy/deploy.sh on the server)
+        uses: appleboy/ssh-action@v1.2.2
+        env:
+          APP_DIR: ${{ secrets.SERVER_APP_DIR }}
+          HEALTHCHECK_URL: ${{ secrets.HEALTHCHECK_URL }}
+        with:
+          host: ${{ secrets.SERVER_HOST }}
+          username: ${{ secrets.SERVER_USER }}
+          port: ${{ secrets.SERVER_PORT || 22 }}
+          key: ${{ secrets.SERVER_SSH_KEY }}
+          envs: APP_DIR,HEALTHCHECK_URL
+          script_stop: true          # abort on the first failed command
+          command_timeout: 20m
+          script: |
+            set -euo pipefail
+            cd "${APP_DIR:-/var/www/gabhaenterprise}"
+            bash deploy/deploy.sh
+
+      - name: Verify homepage is reachable (external HTTP 200)
+        env:
+          HEALTHCHECK_URL: ${{ secrets.HEALTHCHECK_URL }}
+        run: |
+          set -euo pipefail
+          url="${HEALTHCHECK_URL:-https://gabhaenterprise.com}"
+          echo "Checking $url"
+          for i in 1 2 3 4 5; do
+            code="$(curl -sS -o /dev/null -w '%{http_code}' --max-time 20 "$url" || echo 000)"
+            echo "Attempt $i → HTTP $code"
+            if [ "$code" = "200" ]; then
+              echo "::notice::Homepage is live (HTTP 200) at $url"
+              exit 0
+            fi
+            sleep 10
+          done
+          echo "::error::Homepage did not return HTTP 200 after retries at $url"
+          exit 1
