@@ -171,6 +171,27 @@
         </div>
     </section>
 
+    {{-- Related guides (published blog posts that reference this service) --}}
+    @if (! empty($guides))
+        <section class="border-t border-line" data-reveal>
+            <div class="container-x py-16 lg:py-20">
+                <x-ui.section-title as="h2" lead="Deeper reading on this service and how it fits your brand.">
+                    Related guides.
+                </x-ui.section-title>
+                <ul class="mt-10 grid gap-x-10 gap-y-8 sm:grid-cols-2 lg:grid-cols-3">
+                    @foreach ($guides as $g)
+                        <li class="border-t border-line-strong pt-5">
+                            <h3 class="font-display text-[1.15rem] text-ink text-balance">
+                                <a href="{{ route('blog.show', $g['slug']) }}" class="transition-colors hover:text-brand">{{ $g['title'] }}</a>
+                            </h3>
+                            <p class="mt-2 text-[0.95rem] leading-relaxed text-muted text-pretty">{{ $g['excerpt'] }}</p>
+                        </li>
+                    @endforeach
+                </ul>
+            </div>
+        </section>
+    @endif
+
     <x-ui.cta-band label="Get a quote" />
 
     <script type="application/ld+json">{!! json_encode($serviceSchema, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE) !!}</script>

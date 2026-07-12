@@ -18,7 +18,9 @@ routes/web.php → PageController@<page> → view('pages.<page>')
   `InquiryReceived`; mail failures are caught + `report()`ed so a lead is never lost. Redirects
   `back()->with('inquiry_sent', true)`.
 - **SitemapController (__invoke)** — hardcoded ordered URL list (route name + priority + freq) →
-  renders `sitemap` view as `application/xml`.
+  renders `sitemap` view as `application/xml`. Appends service pages + **published** blog posts.
+- **BlogController** — `index` + `show` for the config-driven content hub (`config/blog.php`,
+  `pages/blog/*`). No DB. Draft posts are `noindex` + excluded from sitemap. See `content.md`.
 
 ## Requests / validation
 

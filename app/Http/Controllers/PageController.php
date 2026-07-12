@@ -40,7 +40,15 @@ class PageController extends Controller
             'path'    => $pages[$r]['path'],
         ])->all();
 
-        return view('pages.service', compact('slug', 'page', 'meta', 'related'));
+        // Reverse link: published guides that reference this service.
+        $guides = [];
+        foreach (config('blog.posts') as $bslug => $bp) {
+            if (($bp['status'] ?? '') === 'published' && in_array($slug, $bp['related_services'] ?? [], true)) {
+                $guides[] = ['slug' => $bslug, 'title' => $bp['h1'], 'excerpt' => $bp['excerpt']];
+            }
+        }
+
+        return view('pages.service', compact('slug', 'page', 'meta', 'related', 'guides'));
     }
 
     public function capabilities(): View

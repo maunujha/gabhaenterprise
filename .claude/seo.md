@@ -43,6 +43,8 @@ Props: `title`, `description`, `canonical`, `ogImage`, `ogImageAlt`, `ogType` (d
 - **`/sitemap.xml`** — dynamic, `SitemapController` → `sitemap.blade.php`. Ordered URL list with
   per-route `priority` + `changefreq`; `lastmod = now()->toAtomString()`. Add new pages here.
   The 9 dedicated service pages are appended automatically by iterating `config('service_pages')`.
+  **Published** blog posts (+ the `/blog` index) are appended from `config('blog.posts')`; drafts
+  are excluded. Blog posts emit `Article`/`BlogPosting` JSON-LD when published. See `content.md`.
 - **`robots.txt`** — static at `public/robots.txt`.
 
 ## Analytics & Search Console (opt-in via env)

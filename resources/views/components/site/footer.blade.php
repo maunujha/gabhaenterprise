@@ -56,6 +56,7 @@
                     <h2 class="text-[0.72rem] uppercase tracking-[0.18em] text-on-ink-muted">More</h2>
                     <ul class="mt-4 space-y-3 text-[0.95rem]">
                         <li><a href="{{ route('industries') }}" class="text-on-ink/90 hover:text-white transition-colors">Industries</a></li>
+                        <li><a href="{{ route('blog.index') }}" class="text-on-ink/90 hover:text-white transition-colors">Guides</a></li>
                         <li><a href="{{ route('faqs') }}" class="text-on-ink/90 hover:text-white transition-colors">FAQs</a></li>
                         <li>
                             <a href="{{ $company['links']['urbanflaky'] }}" rel="noopener" target="_blank"

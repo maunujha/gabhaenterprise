@@ -15,6 +15,8 @@ All routes are in `routes/web.php`. No API routes, no admin, no auth. Every rout
 | `/why-choose-us` | `why` | `whyChooseUs` |
 | `/faqs` | `faqs` | `faqs` |
 | `/contact` | `contact` | `contact` |
+| `/blog` | `blog.index` | `BlogController@index` |
+| `/blog/{post}` | `blog.show` | `BlogController@show` |
 
 > SEO-friendly slugs. Route name ≠ path for `services` and `why` — reference by **name**.
 
@@ -34,6 +36,11 @@ links, CTA. Per-page **Service** + **FAQPage** JSON-LD (breadcrumb comes from `p
 - `POST /contact` → `InquiryController@store`, name **`inquiry.store`**
 - Middleware: `throttle:6,1` (6/min) + web-group CSRF + honeypot (in `StoreInquiryRequest`)
 - Success: redirect `back()` with session flash `inquiry_sent = true`
+
+## Blog / content hub
+
+`BlogController` (`index` + `show`) serves a config-driven blog from `config/blog.php` — no DB.
+Draft posts render but are `noindex` and kept out of the sitemap. See `content.md`.
 
 ## Special endpoints
 

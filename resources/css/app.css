@@ -280,6 +280,97 @@
     .link-underline:hover::after {
         transform: scaleX(1);
     }
+
+    /* Long-form article body (blog guides) — semantic HTML, tokenized. */
+    .article {
+        color: var(--color-ink-soft);
+        font-size: 1.02rem;
+        line-height: 1.75;
+    }
+    .article > * + * {
+        margin-top: 1.25rem;
+    }
+    .article > :first-child {
+        margin-top: 0;
+    }
+    .article h2 {
+        font-family: var(--font-heading);
+        font-weight: 600;
+        letter-spacing: -0.02em;
+        line-height: 1.15;
+        color: var(--color-ink);
+        font-size: clamp(1.5rem, 2.6vw, 1.95rem);
+        margin-top: 3rem;
+        text-wrap: balance;
+    }
+    .article h3 {
+        font-family: var(--font-heading);
+        font-weight: 600;
+        color: var(--color-ink);
+        font-size: 1.2rem;
+        margin-top: 2rem;
+        text-wrap: balance;
+    }
+    .article h2 + p,
+    .article h3 + p {
+        margin-top: 1rem;
+    }
+    .article p {
+        text-wrap: pretty;
+    }
+    .article a {
+        color: var(--color-brand);
+        font-weight: 500;
+        text-decoration: underline;
+        text-decoration-color: color-mix(in oklch, var(--color-brand) 35%, transparent);
+        text-underline-offset: 3px;
+        transition: text-decoration-color 0.25s var(--ease-out-quint);
+    }
+    .article a:hover {
+        text-decoration-color: var(--color-brand);
+    }
+    .article strong {
+        font-weight: 600;
+        color: var(--color-ink);
+    }
+    .article ul,
+    .article ol {
+        padding-left: 1.35rem;
+    }
+    .article li {
+        margin-top: 0.5rem;
+        padding-left: 0.2rem;
+    }
+    .article ul > li {
+        list-style: disc;
+    }
+    .article ol > li {
+        list-style: decimal;
+    }
+    .article li::marker {
+        color: var(--color-brand);
+    }
+    .article table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 0.95rem;
+    }
+    .article thead th {
+        text-align: left;
+        font-weight: 600;
+        color: var(--color-ink);
+        border-bottom: 1px solid var(--color-line-strong);
+        padding: 0.6rem 1rem 0.6rem 0;
+    }
+    .article tbody td {
+        border-bottom: 1px solid var(--color-line);
+        padding: 0.7rem 1rem 0.7rem 0;
+        vertical-align: top;
+    }
+    .article tbody tr td:first-child {
+        font-weight: 500;
+        color: var(--color-ink);
+    }
 }
 
 /* --- Sticky WhatsApp button (primary contact CTA) --------------------- */
