@@ -154,6 +154,7 @@ Runs on every push to `main`; **deploy is skipped if any blocking check fails**.
 | PHP version | ✅ | `php -v` (pinned to 8.3) |
 | Composer manifest | ✅ | `composer validate --strict` |
 | Dependency install | ✅ | `composer install` |
+| Front-end build | ✅ | `npm ci && npm run build` (Vite; needed so `@vite()` resolves the manifest in tests) |
 | PHP syntax | ✅ | `php -l` across `app config database routes tests` |
 | Laravel config compiles | ✅ | `php artisan config:cache` |
 | Tests | ✅ | `php artisan test` (PHPUnit; uses `phpunit.xml` sqlite/array drivers) |
